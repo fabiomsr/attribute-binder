@@ -1,0 +1,38 @@
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'maven-publish'
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+}
+
+sourceCompatibility = "1.7"
+targetCompatibility = "1.7"
+
+
+publishing {
+    repositories {
+        maven {
+            url mavenLocal()
+        }
+    }
+
+    publications {
+        maven(MavenPublication) {
+            groupId 'org.fabiomsr'
+            artifactId 'yeko-annotations'
+            version '0.0.1'
+
+            from components.java
+
+            artifact (sourcesJar) {
+                classifier "sources"
+            }
+        }
+    }
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
